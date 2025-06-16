@@ -1,31 +1,90 @@
 .page-wrapper {
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  padding-right: 320px; /* Platz für die Sidebar */
 }
 
 .album-container {
   display: flex;
   flex-wrap: wrap;
   gap: 21px;
-  background-color: gray;
+  background-color: #e2e2e2; /* hellgrau wie im Screenshot */
   padding: 20px;
   border-radius: 20px;
-  width: fit-content;
-  max-width: 80%;
+  width: 100%;
+  min-height: 100vh;
 }
+
+/* --------------------- SIDEBAR --------------------- */
 
 .sidebar {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  width: 320px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
   padding: 20px;
   background-color: white;
-  border-radius: 20px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+  z-index: 100;
 }
 
+/* Oben: Welcome + Icons */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
+.welcome-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+}
+
+.icon-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: none;
+  background-color: white;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Spacer: schiebt Button nach unten */
+.spacer {
+  flex-grow: 1;
+}
+
+/* Unten: Neues Album */
+.bottom-bar {
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.new-album-btn {
+  padding: 15px 25px;
+  border-radius: 20px;
+  border: none;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  background-color: white;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+/* --------------------- CARDS --------------------- */
 
 .card {
   position: relative;
@@ -34,11 +93,13 @@
   border-radius: 50%;
   overflow: hidden;
   box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.25);
-  transition: border-radius 0.3s;
+  transition: all 0.3s;
+  opacity: 95%;
 }
 
 .card:hover {
   border-radius: 90px;
+  opacity: 1;
 }
 
 .card-image {
@@ -63,7 +124,6 @@
   font-family: 'Inter', sans-serif;
   box-sizing: border-box;
 }
-
 
 .card:hover .card-overlay {
   transform: translateY(0%);
