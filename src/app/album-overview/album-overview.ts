@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForOf, NgIf } from '@angular/common';
-import { CreateAlbumPopupComponent } from '../create-album-popup/create-album-popup';
 import { HttpClient } from '@angular/common/http';
-import { KeycloakService } from 'keycloak-angular';
+import { CreateAlbumPopupComponent } from '../create-album-popup/create-album-popup';
 
 @Component({
   selector: 'app-album-overview',
   templateUrl: './album-overview.html',
   styleUrls: ['./album-overview.css'],
   standalone: true,
-  imports: [NgIf, CreateAlbumPopupComponent, NgForOf]
+  imports: [NgIf, NgForOf, CreateAlbumPopupComponent]
 })
 export class AlbumOverview {
   alben: any[] = [];
@@ -22,26 +21,8 @@ export class AlbumOverview {
   constructor(
     private router: Router,
     private http: HttpClient,
-    private keycloakService: KeycloakService
+
   ) {}
-
-  async ngOnInit() {
-    this.isLoggedIn = this.keycloakService.isLoggedIn();
-
-    if (this.isLoggedIn) {
-      this.setupUser();
-    }
-  }
-
-
-  loadUserAlbums(userId: string) {
-    this.http
-      .get<any[]>(`http://localhost:7070/api/albums/user/${userId}`)
-      .subscribe(albums => {
-        this.alben = albums;
-      });
-  }
-
   albumErstellen(album: any) {
     this.alben.push(album);
     this.popupVisible = false;
@@ -50,29 +31,4 @@ export class AlbumOverview {
   gotoAlbum(albumId: number) {
     this.router.navigate(['/album', albumId]);
   }
-
-  login() {
-    this.keycloakService.login().then(() => {
-      this.setupUser();
-      this.isLoggedIn = true;
-    });
-  }
-
-
-  logout() {
-    this.keycloakService.logout('http://localhost:4200');
-  }
-
-  private setupUser() {
-    const keycloak = this.keycloakService.getKeycloakInstance();
-    const tokenParsed = keycloak.tokenParsed;
-
-    this.username = tokenParsed?.['preferred_username'] || 'Unbekannt';
-    this.userId = tokenParsed?.sub || null;
-
-    if (this.userId) {
-      this.loadUserAlbums(this.userId);
-    }
-  }
-
 }

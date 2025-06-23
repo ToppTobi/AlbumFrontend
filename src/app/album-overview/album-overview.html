@@ -11,40 +11,23 @@
 
   <div class="sidebar">
     <div class="user-info">
-      <div class="welcome-card" (click)="!isLoggedIn && login()">
-        <p *ngIf="isLoggedIn; else loginText">
-          Willkommen,<br><strong>{{ username }}</strong>
+      <div class="welcome-card">
+        <p>
+          Willkommen,<br><strong>Tobias Topp</strong>
         </p>
-        <ng-template #loginText>
-          <p class="login-hint">Logge dich ein</p>
-        </ng-template>
-      </div>
-
-
-      <div class="icon-buttons">
-        <button class="icon-btn" *ngIf="isLoggedIn" (click)="logout()">
-          <i class="fas fa-sign-out-alt"></i>
-        </button>
-        <button class="icon-btn" *ngIf="!isLoggedIn" (click)="login()">
-          <i class="fas fa-sign-in-alt"></i>
-        </button>
       </div>
     </div>
 
     <div class="spacer"></div>
 
-    <button
-      class="new-album-btn"
-      *ngIf="isLoggedIn"
-      (click)="popupVisible = true"
-    >
+    <button class="new-album-btn" (click)="popupVisible = true">
       Neues Album
     </button>
 
     <app-create-album-popup
       *ngIf="popupVisible"
       (close)="popupVisible = false"
-      (create)="albumErstellen($event)"
-    ></app-create-album-popup>
+      (create)="albumErstellen($event)">
+    </app-create-album-popup>
   </div>
 </div>
