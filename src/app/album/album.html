@@ -1,0 +1,36 @@
+
+<div class="page-wrapper">
+  <div class="album-container">
+    <div class="page-wrapper">
+      <div class="card">
+        <div class="card-image" [style.background-image]="'url(' + bilder[0] + ')'"></div>
+        <div class="card-overlay">
+          <button class="delete-button"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sidebar">
+    <div class="user-info">
+      <div class="welcome-card">
+        <p>Wilkommen,<br><strong>Tobias Topp</strong></p>
+      </div>
+      <div class="icon-buttons">
+        <button class="icon-btn"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <button class="new-album-btn" (click)="popupVisible = true">Bild hinzufügen</button>
+
+    <app-add-album-picture
+      *ngIf="popupVisible"
+      (close)="popupVisible = false"
+      (create)="addPicture($event)">
+    </app-add-album-picture>
+
+  </div>
+</div>

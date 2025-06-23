@@ -9,5 +9,9 @@ export const routes: Routes = [
     path: '',
     loadComponent: () => import('./album-overview/album-overview').then(m => m.AlbumOverview),
   },
+  {
+    path: 'album',
+    loadComponent: () => import('./album/album').then(m => m.Album),
+  },
 ];
 

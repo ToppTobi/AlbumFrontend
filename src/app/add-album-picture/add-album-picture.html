@@ -1,0 +1,15 @@
+<div class="popup-backdrop" (click)="closePopup()"></div>
+
+<div class="popup">
+  <h2>Neues Album erstellen</h2>
+
+  <form (ngSubmit)="submitAlbum()" #albumForm="ngForm">
+    <label>Bild-URL</label>
+    <input type="text" name="bild" [(ngModel)]="album.bild" required />
+
+    <div class="button-row">
+      <button type="button" (click)="closePopup()">Abbrechen</button>
+      <button type="submit" [disabled]="!albumForm.valid">Erstellen</button>
+    </div>
+  </form>
+</div>
