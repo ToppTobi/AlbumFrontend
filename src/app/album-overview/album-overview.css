@@ -83,6 +83,7 @@
 
 .new-album-btn {
   padding: 50px;
+  margin-bottom: 20px;
   border-radius: 20px;
   border: none;
   font-size: 1.5rem;
@@ -137,3 +138,16 @@
 .card:hover .card-overlay {
   transform: translateY(0%);
 }
+
+
+
+
+.login-hint {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.login-hint:hover {
+  color: #0056b3;
+}
+

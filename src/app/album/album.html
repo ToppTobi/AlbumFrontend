@@ -2,15 +2,15 @@
 <div class="page-wrapper">
   <div class="album-container">
     <div class="page-wrapper">
-      <div class="card">
-        <div class="card-image" [style.background-image]="'url(' + bilder[0] + ')'"></div>
+      <div class="card" *ngFor="let bild of bilder; let i = index">
+        <div class="card-image" [ngStyle]="{'background-image': 'url(' + bild.url + ')'}"></div>
         <div class="card-overlay">
-          <button class="delete-button"><i class="fa-solid fa-trash"></i></button>
+          <button class="delete-button" (click)="deletePicture(bild.id, i)">
+            <i class="fa-solid fa-trash"></i>
+          </button>
         </div>
       </div>
     </div>
-
-  </div>
 
   <div class="sidebar">
     <div class="user-info">
@@ -23,14 +23,26 @@
     </div>
 
     <div class="spacer"></div>
-
+    <button class="delete-album-button" (click)="confirmDeleteVisible = true">Album Löschen</button>
     <button class="new-album-btn" (click)="popupVisible = true">Bild hinzufügen</button>
+    <div class="popup-backdrop" *ngIf="confirmDeleteVisible" (click)="confirmDeleteVisible = false"></div>
+
+    <div class="popup confirm-delete" *ngIf="confirmDeleteVisible" (click)="$event.stopPropagation()">
+      <h3>Album löschen</h3>
+      <p>Sind Sie sicher, dass Sie dieses Album löschen möchten?</p>
+      <div class="button-row">
+        <button (click)="confirmDeleteVisible = false">Nein</button>
+        <button (click)="deleteAlbum()">Ja</button>
+      </div>
+    </div>
 
     <app-add-album-picture
       *ngIf="popupVisible"
+      [albumId]="albumId"
       (close)="popupVisible = false"
       (create)="addPicture($event)">
     </app-add-album-picture>
+
 
   </div>
 </div>

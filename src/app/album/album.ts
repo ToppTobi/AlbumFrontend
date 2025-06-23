@@ -1,25 +1,65 @@
-import { Component } from '@angular/core';
-import {NgIf} from '@angular/common';
-import {AddAlbumPicture} from '../add-album-picture/add-album-picture';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { NgIf, NgFor, NgStyle } from '@angular/common';
+import { AddAlbumPicture } from '../add-album-picture/add-album-picture';
 
 @Component({
   selector: 'app-album',
-  imports: [
-    AddAlbumPicture,
-    NgIf,
-    AddAlbumPicture
-  ],
   templateUrl: './album.html',
-  styleUrl: './album.css'
+  styleUrls: ['./album.css'],
+  standalone: true,
+  imports: [NgIf, NgFor, AddAlbumPicture, NgStyle]
 })
-export class Album {
-  bilder = ['assets/pictures/tokyo.png', 'assets/pictures/tokyo.png', 'assets/pictures/tokyo.png', 'assets/pictures/tokyo.png'];
-
-
+export class Album implements OnInit {
+  bilder: { id: number; url: string }[] = [];
   popupVisible = false;
+  confirmDeleteVisible = false;
+  albumId: number = 0;
+
+  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.albumId = +id;
+      this.http.get<any[]>(`http://localhost:7070/api/photos/album/${id}`).subscribe(data => {
+        this.bilder = data.map(p => ({
+          id: p.id,
+          url: p.url.startsWith('http') ? p.url : `http://localhost:7070/${p.url}`
+        }));
+      });
+    }
+  }
 
   addPicture(picture: any) {
-    console.log('Neues Bild hinzufügen:', picture);
+    this.bilder.push({
+      id: picture.id,
+      url: picture.url.startsWith('http') ? picture.url : `http://localhost:7070/${picture.url}`
+    });
     this.popupVisible = false;
+  }
+
+  deletePicture(photoId: number, index: number) {
+    this.http.delete(`http://localhost:7070/api/photos/${photoId}`).subscribe({
+      next: () => {
+        this.bilder.splice(index, 1);
+      },
+      error: err => {
+        console.error('Löschen fehlgeschlagen:', err);
+      }
+    });
+  }
+
+  deleteAlbum() {
+    this.http.delete(`http://localhost:7070/api/albums/${this.albumId}`).subscribe({
+      next: () => {
+        this.confirmDeleteVisible = false;
+        window.location.href = '/'; // Passe an, falls du Routing verwendest
+      },
+      error: err => {
+        console.error('Album löschen fehlgeschlagen:', err);
+      }
+    });
   }
 }

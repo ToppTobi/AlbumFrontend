@@ -1,13 +1,13 @@
 .page-wrapper {
   display: flex;
-  padding-right: 320px; /* Platz für die Sidebar */
+  padding-right: 320px;
 }
 
 .album-container {
   display: flex;
   flex-wrap: wrap;
   gap: 21px;
-  background-color: #e2e2e2; /* hellgrau wie im Screenshot */
+  background-color: #e2e2e2;
   padding: 20px;
   border-radius: 20px;
   width: 100%;
@@ -83,6 +83,7 @@
 
 .new-album-btn {
   padding: 50px;
+  margin-bottom: 20px;
   border-radius: 20px;
   border: none;
   font-size: 1.5rem;
@@ -93,14 +94,28 @@
   cursor: pointer;
 }
 
+.delete-album-button {
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  border: none;
+  font-size: 1.5rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
+  background-color: #ff4a4a;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+  cursor: pointer;
+}
+
 /* --------------------- CARDS --------------------- */
 
 .card {
   position: relative;
-  width: 350px;
-  height: 350px;
+  width: 400px;
+  height: 400px;
   border-radius: 90px;
   overflow: hidden;
+  margin-right: 30px;
   box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.25);
   transition: all 0.3s;
   opacity: 95%;
@@ -138,5 +153,64 @@
   padding-left: 40px;
   text-align: left;
 }
+
+
+/* --------------------- Delete Album Popup --------------------- */
+/* Hintergrund-Overlay */
+.popup-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.popup.confirm-delete {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  width: 280px;
+  z-index: 1001;
+  text-align: center;
+}
+
+.popup.confirm-delete h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+.popup.confirm-delete p {
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.popup.confirm-delete .button-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.popup.confirm-delete button {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.popup.confirm-delete button:first-child {
+  background: #eee;
+}
+
+.popup.confirm-delete button:last-child {
+  background: #d32f2f;
+  color: white;
+}
+
+
 
 

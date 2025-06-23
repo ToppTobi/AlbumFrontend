@@ -3,9 +3,9 @@
 <div class="popup">
   <h2>Neues Album erstellen</h2>
 
-  <form (ngSubmit)="submitAlbum()" #albumForm="ngForm">
-    <label>Bild-URL</label>
-    <input type="text" name="bild" [(ngModel)]="album.bild" required />
+  <form (ngSubmit)="submitAlbum()" #albumForm="ngForm" enctype="multipart/form-data">
+    <label>Bild hochladen</label>
+    <input type="file" (change)="onFileSelected($event)" accept="image/*" required />
 
     <label>Titel</label>
     <input type="text" name="titel" [(ngModel)]="album.titel" required />
@@ -23,7 +23,7 @@
 
     <div class="button-row">
       <button type="button" (click)="closePopup()">Abbrechen</button>
-      <button type="submit" [disabled]="!albumForm.valid">Erstellen</button>
+      <button type="submit" [disabled]="!albumForm.valid || !selectedFile">Erstellen</button>
     </div>
   </form>
 </div>

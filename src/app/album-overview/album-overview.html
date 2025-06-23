@@ -1,116 +1,50 @@
 <div class="page-wrapper">
-<div class="album-container">
-  <div class="card">
-  <div class="card-image" [style.background-image]="'url(' + bilder[0] + ')'"></div>
-  <div class="card-overlay">
-    <h3>Schweiz • 2023</h3>
-    <p>Ausflug mit meiner Freundin. Diese Bilder wurden in den Bergen der Schweiz geschossen</p>
-  </div>
-</div>
-
-  <div class="card">
-    <div class="card-image" [style.background-image]="'url(' + bilder[0] + ')'"></div>
-    <div class="card-overlay">
-      <h3>Schweiz • 2023</h3>
-      <p>Ausflug mit meiner Freundin. Diese Bilder wurden in den Bergen der Schweiz geschossen</p>
+  <div class="album-container">
+    <div class="card" *ngFor="let album of alben" (click)="gotoAlbum(album.id)">
+      <div class="card-image" [style.background-image]="'url(' + album.imageUrl + ')'"></div>
+      <div class="card-overlay">
+        <h3>{{ album.title }} • {{ album.year }}</h3>
+        <p>{{ album.description }}</p>
+      </div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-image" [style.background-image]="'url(' + bilder[0] + ')'"></div>
-    <div class="card-overlay">
-      <h3>Schweiz • 2023</h3>
-      <p>Ausflug mit meiner Freundin. Diese Bilder wurden in den Bergen der Schweiz geschossen</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-image" [style.background-image]="'url(' + bilder[0] + ')'"></div>
-    <div class="card-overlay">
-      <h3>Schweiz • 2023</h3>
-      <p>Ausflug mit meiner Freundin. Diese Bilder wurden in den Bergen der Schweiz geschossen</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-image" [style.background-image]="'url(' + bilder[0] + ')'"></div>
-    <div class="card-overlay">
-      <h3>Schweiz • 2023</h3>
-      <p>Ausflug mit meiner Freundin. Diese Bilder wurden in den Bergen der Schweiz geschossen</p>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-image" [style.background-image]="'url(' + bilder[0] + ')'"></div>
-    <div class="card-overlay">
-      <h3>Schweiz • 2023</h3>
-      <p>Ausflug mit meiner Freundin. Diese Bilder wurden in den Bergen der Schweiz geschossen</p>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-image" [style.background-image]="'url(' + bilder[0] + ')'"></div>
-    <div class="card-overlay">
-      <h3>Schweiz • 2023</h3>
-      <p>Ausflug mit meiner Freundin. Diese Bilder wurden in den Bergen der Schweiz geschossen</p>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-image" [style.background-image]="'url(' + bilder[0] + ')'"></div>
-    <div class="card-overlay">
-      <h3>Schweiz • 2023</h3>
-      <p>Ausflug mit meiner Freundin. Diese Bilder wurden in den Bergen der Schweiz geschossen</p>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-image" [style.background-image]="'url(' + bilder[0] + ')'"></div>
-    <div class="card-overlay">
-      <h3>Schweiz • 2023</h3>
-      <p>Ausflug mit meiner Freundin. Diese Bilder wurden in den Bergen der Schweiz geschossen</p>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-image" [style.background-image]="'url(' + bilder[0] + ')'"></div>
-    <div class="card-overlay">
-      <h3>Schweiz • 2023</h3>
-      <p>Ausflug mit meiner Freundin. Diese Bilder wurden in den Bergen der Schweiz geschossen</p>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-image" [style.background-image]="'url(' + bilder[0] + ')'"></div>
-    <div class="card-overlay">
-      <h3>Schweiz • 2023</h3>
-      <p>Ausflug mit meiner Freundin. Diese Bilder wurden in den Bergen der Schweiz geschossen</p>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-image" [style.background-image]="'url(' + bilder[0] + ')'"></div>
-    <div class="card-overlay">
-      <h3>Schweiz • 2023</h3>
-      <p>Ausflug mit meiner Freundin. Diese Bilder wurden in den Bergen der Schweiz geschossen</p>
-    </div>
-  </div>
-</div>
-
-<div class="sidebar">
-  <div class="user-info">
-    <div class="welcome-card">
-      <p>Wilkommen,<br><strong>Tobias Topp</strong></p>
-    </div>
-    <div class="icon-buttons">
-      <button class="icon-btn"><i class="fas fa-sign-out-alt"></i></button>
-    </div>
-  </div>
-
-  <div class="spacer"></div>
-
-  <button class="new-album-btn" (click)="popupVisible = true">Neues Album</button>
-
-  <app-create-album-popup
-    *ngIf="popupVisible"
-    (close)="popupVisible = false"
-    (create)="albumErstellen($event)">
-  </app-create-album-popup>
+  <div class="sidebar">
+    <div class="user-info">
+      <div class="welcome-card" (click)="!isLoggedIn && login()">
+        <p *ngIf="isLoggedIn; else loginText">
+          Willkommen,<br><strong>{{ username }}</strong>
+        </p>
+        <ng-template #loginText>
+          <p class="login-hint">Logge dich ein</p>
+        </ng-template>
+      </div>
 
 
+      <div class="icon-buttons">
+        <button class="icon-btn" *ngIf="isLoggedIn" (click)="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+        <button class="icon-btn" *ngIf="!isLoggedIn" (click)="login()">
+          <i class="fas fa-sign-in-alt"></i>
+        </button>
+      </div>
+    </div>
 
-</div>
+    <div class="spacer"></div>
+
+    <button
+      class="new-album-btn"
+      *ngIf="isLoggedIn"
+      (click)="popupVisible = true"
+    >
+      Neues Album
+    </button>
+
+    <app-create-album-popup
+      *ngIf="popupVisible"
+      (close)="popupVisible = false"
+      (create)="albumErstellen($event)"
+    ></app-create-album-popup>
+  </div>
 </div>

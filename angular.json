@@ -20,7 +20,8 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/assets/silent-check-sso.html"
             ],
             "styles": [
               "src/styles.css"
@@ -88,5 +89,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "1285cde3-f964-4fd4-8c31-8cb6530736fd"
   }
 }
