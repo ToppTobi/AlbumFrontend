@@ -1,7 +1,7 @@
 
 <div class="page-wrapper">
   <div class="album-container">
-    <div class="page-wrapper">
+
       <div class="card" *ngFor="let bild of bilder; let i = index">
         <div class="card-image" [ngStyle]="{'background-image': 'url(' + bild.url + ')'}"></div>
         <div class="card-overlay">
@@ -10,16 +10,28 @@
           </button>
         </div>
       </div>
-    </div>
+
 
   <div class="sidebar">
     <div class="user-info">
-      <div class="welcome-card">
-        <p>Wilkommen,<br><strong>Tobias Topp</strong></p>
+      <div class="welcome-card" (click)="login()" *ngIf="!isLoggedIn">
+        <p class="login-hint">Logge dich ein</p>
+      </div>
+
+
+      <div class="welcome-card" *ngIf="isLoggedIn">
+        <p>
+          Willkommen,<br><strong>{{ username }}</strong>
+        </p>
+      </div>
+      <div class="button-layout">
+        <div class="back-button">
+        <button (click)="back()" title="Logout" class="icon-btn"><i class="fa-solid fa-arrow-left"></i></button>
       </div>
       <div class="icon-buttons">
-        <button class="icon-btn"><i class="fas fa-sign-out-alt"></i></button>
+        <button  *ngIf="isLoggedIn" (click)="logout()" title="Logout" class="icon-btn"><i class="fas fa-sign-out-alt"></i></button>
       </div>
+    </div>
     </div>
 
     <div class="spacer"></div>

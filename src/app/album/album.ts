@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { NgIf, NgFor, NgStyle } from '@angular/common';
 import { AddAlbumPicture } from '../add-album-picture/add-album-picture';
+import keycloak from '../keycloak';
+import {routes} from '../app.routes';
 
 @Component({
   selector: 'app-album',
@@ -17,9 +19,19 @@ export class Album implements OnInit {
   confirmDeleteVisible = false;
   albumId: number = 0;
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+  isLoggedIn = false;
+  username = '';
+
+  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
+    this.isLoggedIn = keycloak.authenticated || false;
+
+
+    if (this.isLoggedIn) {
+      this.username = keycloak.tokenParsed?.['preferred_username'] || 'Unbekannt';
+    }
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.albumId = +id;
@@ -30,6 +42,14 @@ export class Album implements OnInit {
         }));
       });
     }
+  }
+
+  login() {
+    keycloak.login();
+  }
+
+  logout() {
+    keycloak.logout({ redirectUri: window.location.origin });
   }
 
   addPicture(picture: any) {
@@ -55,11 +75,17 @@ export class Album implements OnInit {
     this.http.delete(`http://localhost:7070/api/albums/${this.albumId}`).subscribe({
       next: () => {
         this.confirmDeleteVisible = false;
-        window.location.href = '/'; // Passe an, falls du Routing verwendest
+        window.location.href = '/';
       },
       error: err => {
         console.error('Album löschen fehlgeschlagen:', err);
       }
     });
+  }
+
+
+    back() {
+      this.router.navigate(['/album-overview']);
+
   }
 }

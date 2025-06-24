@@ -11,11 +11,22 @@
 
   <div class="sidebar">
     <div class="user-info">
-      <div class="welcome-card">
+
+
+      <div class="welcome-card" (click)="login()" *ngIf="!isLoggedIn">
+        <p class="login-hint">Logge dich ein</p>
+      </div>
+
+
+      <div class="welcome-card" *ngIf="isLoggedIn">
         <p>
-          Willkommen,<br><strong>Tobias Topp</strong>
+          Willkommen,<br><strong>{{ username }}</strong>
         </p>
       </div>
+      <div class="icon-buttons">
+        <button  *ngIf="isLoggedIn" (click)="logout()" title="Logout" class="icon-btn"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+
     </div>
 
     <div class="spacer"></div>

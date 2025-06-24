@@ -1,13 +1,31 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import keycloak from './keycloak';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient()
+    provideHttpClient(
+      withInterceptors([
+        (req, next) => {
+          const token = keycloak.token;
+
+          // Wenn ein Token vorhanden ist, hänge es an jede Anfrage an
+          if (token) {
+            const authReq = req.clone({
+              setHeaders: {
+                Authorization: `Bearer ${token}`
+              }
+            });
+            return next(authReq);
+          }
+
+          // Falls kein Token, normale Anfrage senden
+          return next(req);
+        }
+      ])
+    )
   ]
 };
